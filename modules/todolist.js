@@ -41,37 +41,34 @@ function set_visibility_filter(filter) {
 // ============================================================
 // reducers
 
-const initial_state = {
-  todos: [],
-  visibility: FILTER_TYPES.SHOW_ALL
-}
-
-function todolist(state = initial_state, action) {
+function todos(state = [], action) {
   switch (action.type) {
-    case SET_VISIBILITY_FILTER:
-      return Object.assign({},
-                           state,
-                           { visibility: action.filter })
-
     case ADD_TODO:
-      let new_todo = { text: action.text, completed: false }
-      return Object.assign({},
-                           state,
-                           { todos: [ ...state.todos, new_todo ] })
+      return [ ...state.todos, { text: action.text, completed: false } ]
 
     case TOGGLE_TODO:
-      let new_todos = state.todos.map((todo, index) => {
-        if (index === action.index) {
-          return Object.assign({}, todo, {completed: !todo.completed})
-        } else {
-          return todo
-        }
+      return state.map((todo, index) => {
+        return index === action.index ? Object.assign({}, todo, {completed: !todo.completed}) : todo
       })
-      return Object.assign({},
-                           state,
-                           { todos: new_todos })
 
     default:
       return state
+  }
+}
+
+function visibility(state = FILTER_TYPES.SHOW_ALL, action) {
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return action.filter;
+
+    default:
+      return state
+  }
+}
+
+function todolist(state = {}, action) {
+  return {
+    todos: todos(state.todos, action);
+    visibility: visibility(state.visibility, action);
   }
 }
