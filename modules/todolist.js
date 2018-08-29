@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux'
+
 // ============================================================
 // constants
 
@@ -41,7 +43,7 @@ function set_visibility_filter(filter) {
 // ============================================================
 // reducers
 
-function todos(state = [], action) {
+function todos_reducer(state = [], action) {
   switch (action.type) {
     case ADD_TODO:
       return [ ...state.todos, { text: action.text, completed: false } ]
@@ -56,7 +58,7 @@ function todos(state = [], action) {
   }
 }
 
-function visibility(state = FILTER_TYPES.SHOW_ALL, action) {
+function visibility_reducer(state = FILTER_TYPES.SHOW_ALL, action) {
   switch (action.type) {
     case SET_VISIBILITY_FILTER:
       return action.filter;
@@ -66,9 +68,7 @@ function visibility(state = FILTER_TYPES.SHOW_ALL, action) {
   }
 }
 
-function todolist(state = {}, action) {
-  return {
-    todos: todos(state.todos, action);
-    visibility: visibility(state.visibility, action);
-  }
-}
+const todo_app = combineReducers({
+  todos:      todos_reducer,
+  visibility: visibility_reducer,
+})
