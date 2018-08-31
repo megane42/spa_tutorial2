@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 // ============================================================
 // constants
 
-const FILTER_TYPES = {
+export const FILTER_TYPES = {
   SHOW_ALL: 'SHOW_ALL',
   SHOW_ACTIVE: 'SHOW_ACTIVE',
   SHOW_COMPLETED: 'SHOW_COMPLETED',
@@ -12,28 +12,28 @@ const FILTER_TYPES = {
 // ============================================================
 // actions
 
-const ADD_TODO              = 'ADD_TODO'
-const TOGGLE_TODO           = 'TOGGLE_TODO'
-const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
+const ADD_TODO              = 'myapp/todoapp/ADD_TODO'
+const TOGGLE_TODO           = 'myapp/todoapp/TOGGLE_TODO'
+const SET_VISIBILITY_FILTER = 'myapp/todoapp/SET_VISIBILITY_FILTER'
 
 // ============================================================
 // action_creators
 
-function add_todo(text) {
+export function add_todo(text) {
   return {
     type: ADD_TODO,
     text: text,
   }
 }
 
-function toggle_todo(index) {
+export function toggle_todo(index) {
   return {
     type: TOGGLE_TODO,
     index: index,
   }
 }
 
-function set_visibility_filter(filter) {
+export function set_visibility_filter(filter) {
   return {
     type: SET_VISIBILITY_FILTER,
     filter: filter,
@@ -46,7 +46,7 @@ function set_visibility_filter(filter) {
 function todos_reducer(state = [], action) {
   switch (action.type) {
     case ADD_TODO:
-      return [ ...state.todos, { text: action.text, completed: false } ]
+      return [ ...state, { text: action.text, completed: false } ]
 
     case TOGGLE_TODO:
       return state.map((todo, index) => {
@@ -68,7 +68,7 @@ function visibility_reducer(state = FILTER_TYPES.SHOW_ALL, action) {
   }
 }
 
-const todo_app = combineReducers({
+export default combineReducers({
   todos:      todos_reducer,
   visibility: visibility_reducer,
 })
